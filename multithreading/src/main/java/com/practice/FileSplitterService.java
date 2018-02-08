@@ -1,6 +1,8 @@
-package com.ExecutorService;
+package com.practice;
 
-import com.ExecutorService.controller.FileOperationsController;
+
+
+import com.practice.controller.FileOperationsController;
 
 import java.util.Scanner;
 
@@ -12,7 +14,7 @@ public class FileSplitterService {
 
 
     public static void main(String[] args) {
-
+        //added for testing purpose
 
         Scanner s = new Scanner(System.in);
 

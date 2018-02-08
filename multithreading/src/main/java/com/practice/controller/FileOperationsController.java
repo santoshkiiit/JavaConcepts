@@ -1,14 +1,12 @@
-package com.ExecutorService.controller;
+package com.practice.controller;
 
-import com.ExecutorService.FileWriter;
+
+import com.practice.FileWriteThread;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,7 +20,7 @@ public class FileOperationsController {
     public void writeToFile(String fileContent) {
 
         fileNameCounter++;
-        executorService.submit(new FileWriter(String.valueOf("/Users/santoshk/Downloads/temp/"+fileNameCounter),fileContent));
+        executorService.submit(new FileWriteThread(String.valueOf(fileNameCounter+".txt"),fileContent));
     }
 
 
@@ -47,6 +45,7 @@ public class FileOperationsController {
 
             }
             writeToFile(lines.toString());
+            //one thread for each file write operation
             executorService.shutdown();
 
 

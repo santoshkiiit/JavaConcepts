@@ -1,4 +1,4 @@
-package com.ExecutorService;
+package com.practice;
 
 import org.apache.commons.io.FileUtils;
 
@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 
 
-public class FileWriter  implements Callable<String> {
+public class FileWriteThread implements Callable<String> {
 
     String fileContent;
     String fileName;
 
 
-    public FileWriter(String fileName, String fileContent) {
+    public FileWriteThread(String fileName, String fileContent) {
         this.fileContent=fileContent;
         this.fileName=fileName;
     }
