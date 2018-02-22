@@ -1,5 +1,7 @@
 package com.multithreading.wordstats;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -16,14 +18,18 @@ import java.util.concurrent.Executors;
 
 // given a directory name , containing files
 // this service creates a executor service , each thread parses one file and returns
-public class WikiFileManager {
+public class WordStatsService {
+
+
+
 
     static Map<String, Integer> wordCount = new ConcurrentHashMap<>();
     static String dirName = "/Users/santoshk/Projects/learning/JAVABASICS/final/JavaConcepts/output/";
 
+    ExecutorService executorService = Executors.newFixedThreadPool(20);
     public static void main(String[] args) throws IOException, InterruptedException {
         //added for testing purpose
-        WikiFileManager fileParseUtility = new WikiFileManager();
+        WordStatsService fileParseUtility = new WordStatsService();
         fileParseUtility.parseAllFilesInDirectory(dirName);
         fileParseUtility.displayWordCount();
     }
@@ -40,24 +46,22 @@ public class WikiFileManager {
             throw new RuntimeException("Directory doesn't exist");
         }
 
-        if(file.isDirectory()){
+        if(file.isDirectory()&&file.listFiles()!=null){
             List<File> files = Arrays.asList(file.listFiles());
-            ExecutorService executorService = Executors.newFixedThreadPool(files.size());
+            if(files.size()>0) {
+                 executorService = Executors.newFixedThreadPool(files.size());
 
-            for(File tempFile:files){
-                if(tempFile.exists()){
-                    Thread fileParseThread = new Thread(new FileParseThread(tempFile.getPath(), wordCount));
-                    executorService.submit(fileParseThread);
 
+                for (File tempFile : files) {
+                    if (tempFile.exists()) {
+                        Thread fileParseThread = new Thread(new FileParseThread(tempFile.getPath(), wordCount));
+                        executorService.submit(fileParseThread);
+                    }
                 }
-
+                displayWordCount();
+            }else{
+                throw new RuntimeException("no files in directory");
             }
-            executorService.shutdown();
-
-            while(!executorService.isTerminated()){
-               //wait
-            }
-            displayWordCount();
 
 
         }else {
@@ -66,11 +70,14 @@ public class WikiFileManager {
 
     }
 
-    public String displayWordCount(){
+    public void displayWordCount() throws IOException {
+        executorService.shutdown();
+        File file = new File("wordcount2.txt");
         StringBuilder output = new StringBuilder();
         for(String key : wordCount.keySet()){
             output.append(key).append(":").append(wordCount.get(key)).append("\n");
         }
-        return output.toString();
+        FileUtils.writeStringToFile(file,output.toString(),"UTF-8");
     }
+
 }
