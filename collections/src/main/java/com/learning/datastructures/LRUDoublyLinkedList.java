@@ -1,6 +1,7 @@
 package com.learning.datastructures;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Test;
 
 import java.util.NoSuchElementException;
 public class LRUDoublyLinkedList<E> {
@@ -8,7 +9,7 @@ public class LRUDoublyLinkedList<E> {
     private Node head;
     private Node tail;
     private int size;
-    private static int THRESHOLD=100;
+    private static int THRESHOLD=3;
 
     public LRUDoublyLinkedList() {
         size = 0;
@@ -87,6 +88,7 @@ public class LRUDoublyLinkedList<E> {
             if(tmp.url ==url){
                 //remove node and add at first
                 removeNode(tmp);
+                break;
             }
             System.out.println(tmp.cacheContent);
             tmp = tmp.next;
@@ -95,20 +97,23 @@ public class LRUDoublyLinkedList<E> {
     }
 
     public void removeNode(Node currentNode){
-        if(currentNode.next ==null){
+        if(currentNode==tail){
             removeLast();
-            addFirst(currentNode);
+            Node node = new Node(currentNode.url,currentNode.cacheContent,head,null);
+            addFirst(node);
         }
-
-        if(currentNode.prev ==null){
+        else if(currentNode==head){
             //do nothing
         }
-        Node prevNode = currentNode.prev;
-        Node nextNode = currentNode.next;
-        prevNode.next = nextNode;
-        size--;
-
-
+        else {
+            Node prevNode = currentNode.prev;
+            Node nextNode = currentNode.next;
+            prevNode.next = nextNode;
+            nextNode.prev = prevNode;
+            size--;
+            Node tempNode = new Node(currentNode.url,currentNode.cacheContent,head,null);
+            addFirst(tempNode);
+        }
     }
 
 
@@ -119,6 +124,8 @@ public class LRUDoublyLinkedList<E> {
                removeLast();
            }
                addFirst(url,content);
+       }else{
+           findNReplaceNode(url);
        }
 
 
@@ -144,6 +151,26 @@ public class LRUDoublyLinkedList<E> {
         return null;
     }
 
+
+    @Test
+    public void insertTest(){
+        this.insertIntoCache("google.com/1");
+        this.insertIntoCache("google.com/2");
+        this.insertIntoCache("google.com/3");
+        this.insertIntoCache("google.com/2");
+        this.insertIntoCache("google.com/4");
+//        this.insertIntoCache("google.com/2");
+//        this.insertIntoCache("google.com/3");
+//        this.insertIntoCache("google.com/4");
+//        this.insertIntoCache("google.com/1");
+//        this.insertIntoCache("google.com/2");
+//        this.insertIntoCache("google.com/1");
+       this.insertIntoCache("google.com/4");
+        this.insertIntoCache("google.com/3");
+        this.insertIntoCache("google.com/5");
+
+
+    }
 
 
 
