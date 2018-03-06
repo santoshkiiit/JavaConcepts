@@ -1,7 +1,6 @@
 package com.learning.datastructures;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
 
 import java.util.NoSuchElementException;
 public class LRUDoublyLinkedList<E> {
@@ -90,7 +89,6 @@ public class LRUDoublyLinkedList<E> {
                 removeNode(tmp);
                 break;
             }
-            System.out.println(tmp.cacheContent);
             tmp = tmp.next;
         }
         return null;
@@ -149,27 +147,6 @@ public class LRUDoublyLinkedList<E> {
             tmp = tmp.next;
         }
         return null;
-    }
-
-
-    @Test
-    public void insertTest(){
-        this.insertIntoCache("google.com/1");
-        this.insertIntoCache("google.com/2");
-        this.insertIntoCache("google.com/3");
-        this.insertIntoCache("google.com/2");
-        this.insertIntoCache("google.com/4");
-//        this.insertIntoCache("google.com/2");
-//        this.insertIntoCache("google.com/3");
-//        this.insertIntoCache("google.com/4");
-//        this.insertIntoCache("google.com/1");
-//        this.insertIntoCache("google.com/2");
-//        this.insertIntoCache("google.com/1");
-       this.insertIntoCache("google.com/4");
-        this.insertIntoCache("google.com/3");
-        this.insertIntoCache("google.com/5");
-
-
     }
 
 
