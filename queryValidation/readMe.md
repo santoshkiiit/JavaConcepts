@@ -1,6 +1,6 @@
 Basic Query Validation Util
 
-step1: validates the query string using stack and build a expression stack if the query is valid -- commited
+step1: validates the query string using stack and build a expression stack if the query is valid -- commited       
 step2: takes the expression stack as input and builds a QueryExpression object, which can be evaluated in DOA layer.
 
 Assumptions:
